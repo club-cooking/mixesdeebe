@@ -5,6 +5,13 @@ extract_tracklist <- function(page) {
     html_text()
 }
 
+# extract mix title
+extract_mix_title <- function(page) {
+
+  html_nodes(page, css = "#firstHeading") %>%
+    html_text()
+}
+
 # split track entry on hyphen
 split_track <- function(track) {
 
@@ -71,12 +78,17 @@ parse_tracklist <- function(tracklist) {
   track_names <- pluck_track(track_info)
   labels <- pluck_label(track_info)
 
-  # return as tidy tibble
-  tibble(
-    timestamp = time_stamps,
-    artist = artists,
-    track = track_names,
-    label = labels
+  # return a list
+  list(
+    tracklist = lapply(seq_along(tracklist), function(x) {
+
+      list(
+        timestamp = time_stamps[x],
+        artist = artists[x],
+        track = track_names[x],
+        label = labels[x]
+      )
+    })
   )
 
 }
@@ -85,14 +97,20 @@ parse_tracklist <- function(tracklist) {
 #'
 #' @param page url of a mix entry
 #'
-#' @return tibble
+#' @return a list
 #' @export
 #'
 #' @examples
 #' read_tracklist("https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
 read_tracklist <- function(page) {
 
-  read_html(page) %>%
-  extract_tracklist() %>%
+  page_html <- read_html(page)
+
+  tracklist <- extract_tracklist(page_html) %>%
     parse_tracklist()
+
+  tracklist[["title"]] <- extract_mix_title(page_html)
+  tracklist[["url"]] <- page
+
+  tracklist
 }

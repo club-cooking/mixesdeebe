@@ -10,7 +10,7 @@ read_tracklist(page)
 \item{page}{url of a mix entry}
 }
 \value{
-tibble
+a list
 }
 \description{
 Read tracklist metadata from a mix entry
