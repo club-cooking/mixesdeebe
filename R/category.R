@@ -9,9 +9,29 @@ count_entries <- function(home_page) {
 
 }
 
+# The html span object for this page seemed to be null and the of of number was just
+# text so couldnt use your function. Possibly ways to combine later.
+
+count_category_entries <- function(category_page_html) {
+
+  html_text(category_page_html) %>%
+    str_extract("(?<=out of ).*") %>%
+    str_remove_all("\\D") %>%
+    as.numeric(.)
+
+}
+
+
 # assert # of category pages from # mix entries
 assert_pages <- function(x) {
   ceiling(x / 200)
+}
+
+# get all category urls listed on  page
+extract_category_url <- function(page) {
+
+  html_nodes(page, css = "#catSubcatsList a") %>%
+    html_attr("href")
 }
 
 # get all mix urls listed on a category page
@@ -58,4 +78,45 @@ read_category_entries <- function(home_page) {
 
 }
 
+
+#' Get all category urls
+#'
+#' @param category_page category url homepafe
+#'
+#' @return character vector
+#' @export
+#'
+#' @examples
+#' read_category_urls("https://www.mixesdb.com/db/index.php?title=MixesDB:Regular_categories&mode=&cat=&style=&cyonly=&tlN=&format=&offset=0")
+read_category_urls <- function(category_page) {
+
+  category_page_html <- read_html(category_page)
+
+  n_pages <- count_category_entries(category_page_html) %>%
+    assert_pages()
+
+  pages <- list(category_page)
+  mixes <- list()
+
+  for (i in 1:(n_pages)) {
+    page <- read_html(pages[[i]])
+
+    mixes[[i]] <- extract_category_url(page)
+
+
+    if (length(pages) == n_pages) {
+      unlist(mixes)
+    } else {
+      next_category_page <- html_nodes(category_page_html, "span.plainlinks a") %>%
+        html_attr("href") %>%
+        head(1)
+
+      pages[[i+1]] <- paste0("https:", next_category_page)
+
+    }
+  }
+
+  unlist(mixes)
+
+}
 
