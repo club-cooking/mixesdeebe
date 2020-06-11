@@ -14,8 +14,15 @@ assert_pages <- function(x) {
   ceiling(x / 200)
 }
 
+# get all mix urls listed on a category page
+extract_entries <- function(page) {
 
-#' Get all page URLs belonging to a Category entry
+  html_nodes(page, "#catMixesList a") %>%
+    html_attr("href")
+}
+
+
+#' Get all mix URLs listed under a Category entry
 #'
 #' @param home_page landing page url of a Category
 #'
@@ -23,8 +30,8 @@ assert_pages <- function(x) {
 #' @export
 #'
 #' @examples
-#' extract_category_pages("https://www.mixesdb.com/w/Category:Essential_Mix")
-extract_category_pages <- function(home_page) {
+#' read_category_entries("https://www.mixesdb.com/w/Category:Essential_Mix")
+read_category_entries <- function(home_page) {
 
   home_page_html <- read_html(home_page)
 
@@ -32,19 +39,23 @@ extract_category_pages <- function(home_page) {
     assert_pages()
 
   pages <- list(home_page)
+  mixes <- list()
 
   for (i in 1:(n_pages-1)) {
-    page <- read_html(pages[[i]]) %>%
-      html_nodes("#catcount a")
+    page <- read_html(pages[[i]])
+
+    mixes[[i]] <- extract_entries(page)
 
     if (i == 1) {
-      next_page <- page[1]
+      next_page <- html_nodes(page, "#catcount a")[1]
     } else {
-      next_page <- page[2]
+      next_page <- html_nodes(page, "#catcount a")[2]
     }
 
     pages[[i+1]] <- paste0("https://www.mixesdb.com", html_attr(next_page, "href"))
   }
-  unlist(pages)
+  unlist(mixes)
 
 }
+
+
