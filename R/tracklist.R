@@ -83,6 +83,7 @@ parse_tracklist <- function(tracklist) {
     tracklist = lapply(seq_along(tracklist), function(x) {
 
       list(
+        order = x,
         timestamp = time_stamps[x],
         artist = artists[x],
         track = track_names[x],
