@@ -88,7 +88,7 @@ read_category_entries <- function(home_page) {
 #'
 #' @examples
 #' read_category_urls("https://www.mixesdb.com/db/index.php?title=MixesDB:Regular_categories&mode=&cat=&style=&cyonly=&tlN=&format=&offset=0")
-read_category_urls <- function(category_page) {
+read_category_urls <- function(category_page, category_type  = "") {
 
   category_page_html <- read_html(category_page)
 
@@ -103,20 +103,32 @@ read_category_urls <- function(category_page) {
 
     mixes[[i]] <- extract_category_url(page)
 
+    if(category_type == "regular") {
 
-    if (length(pages) == n_pages) {
-      unlist(mixes)
-    } else {
-      next_category_page <- html_nodes(category_page_html, "span.plainlinks a") %>%
-        html_attr("href") %>%
-        head(1)
+      if (length(pages) == n_pages) {
+        unlist(mixes)
+      } else {
+        next_category_page <- html_nodes(category_page_html, "span.plainlinks a") %>%
+          html_attr("href") %>%
+          head(1)
 
-      pages[[i+1]] <- paste0("https:", next_category_page)
+        pages[[i+1]] <- paste0("https:", next_category_page)
 
-    }
-  }
+      }
+    } else
+      if (length(pages) == n_pages) {
+        unlist(mixes)
+      } else {
+        next_category_page <- html_nodes(category_page_html, "div.listPagination a") %>%
+          html_attr("href") %>%
+          head(1)
+
+        pages[[i+1]] <- paste0("mixesdb.com/", next_category_page)
+
+      }
+
+  } #End loop bracket
 
   unlist(mixes)
 
-}
-
+} #func bracket
