@@ -12,12 +12,27 @@ count_entries <- function(home_page) {
 # The html span object for this page seemed to be null and the of of number was just
 # text so couldnt use your function. Possibly ways to combine later.
 
-count_category_entries <- function(category_page_html) {
+count_category_entries <- function(category_page_html, categor_type  = "") {
 
+  if (categor_type == "style") {
+
+    html_text(category_page_html) %>%
+      str_extract("(?<=out of ).*") %>%
+      str_replace("\\).*", "") %>%
+      as.numeric(.)
+  } else if (categor_type == "show") {
+
+    html_nodes(category_page_html, "#catcount") %>%
+      html_text() %>%
+      str_extract("(?<=out of ).*") %>%
+      str_remove_all("\\D") %>%
+      as.numeric(.)
+  } else{
   html_text(category_page_html) %>%
     str_extract("(?<=out of ).*") %>%
     str_remove_all("\\D") %>%
     as.numeric(.)
+  }
 
 }
 
@@ -92,7 +107,7 @@ read_category_urls <- function(category_page, category_type  = "") {
 
   category_page_html <- read_html(category_page)
 
-  n_pages <- count_category_entries(category_page_html) %>%
+  n_pages <- count_category_entries(category_page_html, categor_type = category_type) %>%
     assert_pages()
 
   pages <- list(category_page)
@@ -108,22 +123,27 @@ read_category_urls <- function(category_page, category_type  = "") {
       if (length(pages) == n_pages) {
         unlist(mixes)
       } else {
-        next_category_page <- html_nodes(category_page_html, "span.plainlinks a") %>%
-          html_attr("href") %>%
-          head(1)
 
-        pages[[i+1]] <- paste0("https:", next_category_page)
+        if (i == 1){
+          next_page <- html_nodes(category_page_html, "span.plainlinks a")[1]
+        } else {
+          next_page <- html_nodes(category_page_html, "span.plainlinks a")[2]
+        }
+
+        pages[[i+1]] <- paste0("https:", html_attr(next_page, "href"))
 
       }
     } else
       if (length(pages) == n_pages) {
         unlist(mixes)
       } else {
-        next_category_page <- html_nodes(category_page_html, "div.listPagination a") %>%
-          html_attr("href") %>%
-          head(1)
 
-        pages[[i+1]] <- paste0("mixesdb.com/", next_category_page)
+        if (i == 1) {
+          next_page <- html_nodes(page, "div.listPagination a")[1]
+        } else {
+          next_page <- html_nodes(page, "div.listPagination a")[2]
+        }
+        pages[[i+1]] <- paste0("https://www.mixesdb.com", html_attr(next_page, "href"))
 
       }
 
