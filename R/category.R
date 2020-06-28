@@ -73,13 +73,28 @@ read_category_entries <- function(home_page) {
   n_pages <- count_entries(home_page_html) %>%
     assert_pages()
 
+  if(is_empty(n_pages) == T){
+    n_pages <- count_category_entries(home_page_html) %>%
+      assert_pages()
+  } else {
+    n_pages <- n-pages
+
+  }
+
+
   pages <- list(home_page)
   mixes <- list()
 
-  for (i in 1:(n_pages-1)) {
+
+
+  for (i in 1:(n_pages)) {
     page <- read_html(pages[[i]])
 
     mixes[[i]] <- extract_entries(page)
+
+    if (length(pages) == n_pages) {
+      unlist(mixes)
+    } else {
 
     if (i == 1) {
       next_page <- html_nodes(page, "#catcount a")[1]
@@ -88,8 +103,12 @@ read_category_entries <- function(home_page) {
     }
 
     pages[[i+1]] <- paste0("https://www.mixesdb.com", html_attr(next_page, "href"))
+    }
+
   }
-  unlist(mixes)
+  urls_from_entries <- unlist(mixes)
+  urls_from_entries <- glue::glue("https://www.mixesdb.com{urls_from_entries}")
+
 
 }
 
@@ -112,6 +131,7 @@ read_category_urls <- function(category_page, category_type  = "") {
 
   pages <- list(category_page)
   mixes <- list()
+
 
   for (i in 1:(n_pages)) {
     page <- read_html(pages[[i]])
@@ -149,6 +169,8 @@ read_category_urls <- function(category_page, category_type  = "") {
 
   } #End loop bracket
 
-  unlist(mixes)
+  urls_from_category<- unlist(mixes)
+
+  urls_from_category <- glue::glue("https://www.mixesdb.com{urls_from_category}")
 
 } #func bracket
