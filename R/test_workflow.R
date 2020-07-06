@@ -98,7 +98,27 @@ read_category_entries <- function(home_page) {
 single_category <- read_category_entries(regular[23])
 
 regular = read_category_urls("https://www.mixesdb.com/w/MixesDB:Regular_categories",
+                             category_type = "regular")
+
+podcasts = read_category_urls("https://www.mixesdb.com/w/Category:Podcast",
                              category_type = "")
+
+safe_podcast_entries <- safely(read_category_entries, otherwise = NA_real_)
+podcasts_entries  <- map(podcasts, safe_podcast_entries)
+podcast_results = transpose(podcasts_entries)[["result"]]
+errors <- which(is.na(podcast_results))
+podcast_to_extarct <- unlist(podcasts_entries) %>%
+  sample( size = 100)
+
+read_tracklist_safe <- safely(read_tracklist, otherwise = NA_real_)
+tracklist_for_podcasts <- map(podcast_to_extarct, read_tracklist_safe) %>%
+  set_names(podcast_to_extarct)
+
+foo <- flatten_df(tracklist_for_podcasts) %>%
+  group_by(title) %>%
+  unlist(tracklist)
+foo_ = unlist(foo$tracklist)
+errors_in_tracklist <- transpose(tracklist_for_podcasts)[["error"]]
 
 
 # read_category_entries_safely <- safely(read_category_entries, otherwise = NA_real_)
