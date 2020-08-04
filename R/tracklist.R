@@ -112,8 +112,8 @@ parse_tracklist <- function(tracklist, flatten) {
 #' @export
 #'
 #' @examples
-#' read_tracklist("https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
-read_tracklist <- function(page) {
+#' get_tracklist("https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
+get_tracklist <- function(page) {
 
   page_html <- read_html(page)
 
@@ -134,8 +134,8 @@ read_tracklist <- function(page) {
 #' @export
 #'
 #' @examples
-#' read_tracklist_tidy("https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
-read_tracklist_tidy <- function(page) {
+#' get_tracklist_tidy("https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
+get_tracklist_tidy <- function(page) {
 
   page_html <- read_html(page)
 

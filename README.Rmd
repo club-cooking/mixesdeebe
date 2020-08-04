@@ -1,0 +1,57 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# mixesdeebe
+
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![CRAN status](https://www.r-pkg.org/badges/version/mixesdeebe)](https://CRAN.R-project.org/package=mixesdeebe)
+<!-- badges: end -->
+
+A web scraper for [MixesDB](https://www.mixesdb.com), written in R.
+
+## Installation
+
+You can install the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("club-cooking/mixesdeebe")
+```
+## Usage
+
+```{r load}
+library(mixesdeebe)
+```
+
+Get the tracklist for a listed mix as a list object...
+
+```{r}
+get_tracklist("https://www.mixesdb.com/w/2020-06-15_-_Kush_Jones_-_Resident_Advisor_(RA.732)")
+```
+
+...or, in an analysis-friendly tibble.
+
+```{r}
+get_tracklist_tidy("https://www.mixesdb.com/w/2020-06-15_-_Kush_Jones_-_Resident_Advisor_(RA.732)")
+```
+
+Get all mix pages for a listed "sub-category":
+
+```{r}
+get_mix_entries(home_page = "https://www.mixesdb.com/w/Category:Truancy_Volumes")
+```
+
+
