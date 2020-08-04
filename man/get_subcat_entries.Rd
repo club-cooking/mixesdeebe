@@ -4,10 +4,10 @@
 \alias{get_subcat_entries}
 \title{Get all sub-category entries listed on a category page}
 \usage{
-get_subcat_entries(home_page)
+get_subcat_entries(url)
 }
 \arguments{
-\item{home_page}{home page URL of a category}
+\item{url}{URL of a category home page}
 }
 \value{
 character vector
@@ -16,6 +16,8 @@ character vector
 Get all sub-category entries listed on a category page
 }
 \examples{
-get_subcat_entries(home_page = "https://www.mixesdb.com/w/MixesDB:Regular_categories")
-get_subcat_entries(home_page = "https://www.mixesdb.com/w/Category:Venue")
+\dontrun{
+get_subcat_entries(url = "https://www.mixesdb.com/w/MixesDB:Regular_categories")
+get_subcat_entries(url = "https://www.mixesdb.com/w/Category:Venue")
+}
 }

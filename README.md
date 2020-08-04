@@ -31,7 +31,7 @@ library(mixesdeebe)
 #> 'mixesdeebe'
 ```
 
-Get the tracklist for a listed mix as a list object…
+Get the track-list for a listed mix as a list object…
 
 ``` r
 get_tracklist("https://www.mixesdb.com/w/2020-06-15_-_Kush_Jones_-_Resident_Advisor_(RA.732)")
@@ -523,10 +523,10 @@ get_tracklist_tidy("https://www.mixesdb.com/w/2020-06-15_-_Kush_Jones_-_Resident
 #> # … with 17 more rows
 ```
 
-Get all mix pages for a listed “sub-category”:
+Get all mix pages for a listed “sub-category” (e.g. a “mix series”):
 
 ``` r
-get_mix_entries(home_page = "https://www.mixesdb.com/w/Category:Truancy_Volumes")
+get_mix_entries("https://www.mixesdb.com/w/Category:Truancy_Volumes")
 #>  [1] "https://www.mixesdb.com/w/2010-05-03_-_Nguzunguzu_-_Truancy_Volume_11"               
 #>  [2] "https://www.mixesdb.com/w/2011-01-26_-_TWR72_-_Truancy_Volume_22"                    
 #>  [3] "https://www.mixesdb.com/w/2011-04-15_-_Guy_Andrews_-_Truancy_Volume_28"              

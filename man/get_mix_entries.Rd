@@ -4,10 +4,10 @@
 \alias{get_mix_entries}
 \title{Get all mix entries listed under a sub-category}
 \usage{
-get_mix_entries(home_page)
+get_mix_entries(url)
 }
 \arguments{
-\item{home_page}{home page URL of a sub-category}
+\item{url}{URL of a sub-category home page}
 }
 \value{
 character vector
@@ -16,7 +16,9 @@ character vector
 Get all mix entries listed under a sub-category
 }
 \examples{
-get_mix_entries(home_page = "https://www.mixesdb.com/w/Category:FACT_Mix")
-get_mix_entries(home_page = "https://www.mixesdb.com/w/Category:fabric")
-get_mix_entries(home_page = "https://www.mixesdb.com/w/Category:Ben_UFO")
+\dontrun{
+get_mix_entries(url = "https://www.mixesdb.com/w/Category:FACT_Mix")
+get_mix_entries(url = "https://www.mixesdb.com/w/Category:fabric")
+get_mix_entries(url = "https://www.mixesdb.com/w/Category:Ben_UFO")
+}
 }

@@ -4,10 +4,10 @@
 \alias{get_tracklist}
 \title{Read tracklist metadata from a mix entry}
 \usage{
-get_tracklist(page)
+get_tracklist(url)
 }
 \arguments{
-\item{page}{url of a mix entry}
+\item{url}{URL of a mix entry}
 }
 \value{
 a list
@@ -16,5 +16,7 @@ a list
 Read tracklist metadata from a mix entry
 }
 \examples{
-get_tracklist("https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
+\dontrun{
+get_tracklist(url = "https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
+}
 }

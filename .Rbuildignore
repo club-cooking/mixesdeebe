@@ -1,3 +1,5 @@
 ^mixesdeebe\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
+^LICENSE\.md$
+test_workflow.R

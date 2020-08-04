@@ -1,4 +1,3 @@
-#' @import glue purrr rvest stringr tibble xml2
 #' @keywords internal
 "_PACKAGE"
 

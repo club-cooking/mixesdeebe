@@ -1,21 +1,21 @@
 # get track-list element from a mix page
 extract_tracklist <- function(page) {
 
-  html_nodes(page, css = "#Tracklist + ol > li") %>%
-    html_text()
+  rvest::html_nodes(page, css = "#Tracklist + ol > li") %>%
+    rvest::html_text()
 }
 
 # extract mix title
 extract_mix_title <- function(page) {
 
-  html_nodes(page, css = "#firstHeading") %>%
-    html_text()
+  rvest::html_nodes(page, css = "#firstHeading") %>%
+    rvest::html_text()
 }
 
 # split track entry on hyphen
 split_track <- function(track) {
 
-  str_split(track, pattern = " - ", 2)
+  stringr::str_split(track, pattern = " - ", 2)
 }
 
 # check if track name is included/known
@@ -27,7 +27,7 @@ is_track_name_known <- function(split_track) {
 # extract timestamp element
 pluck_timestamp <- function(split_track) {
 
-  str_extract(
+  stringr::str_extract(
     rvest::pluck(split_track, 1), "(?<=\\[).+?(?=\\])"
   )
 }
@@ -35,7 +35,7 @@ pluck_timestamp <- function(split_track) {
 # extract artist element
 pluck_artist <- function(split_track) {
 
-  str_squish(str_split_n(
+  stringr::str_squish(stringr::str_split_n(
     rvest::pluck(split_track, 1), "\\]", 2
   ))
 }
@@ -46,10 +46,10 @@ pluck_track <- function(split_track) {
   # check which tracks are known
   track_known <- is_track_name_known(split_track)
 
-  map2_chr(track_known, split_track, function(x, y) {
+  purrr::map2_chr(track_known, split_track, function(x, y) {
 
     if (!x) return(NA)
-    else return(str_squish(str_split_n(y[2], "\\[", 1)))
+    else return(stringr::str_squish(stringr::str_split_n(y[2], "\\[", 1)))
   })
 }
 
@@ -59,10 +59,10 @@ pluck_label <- function(split_track) {
   # check which tracks are known
   track_known <- is_track_name_known(split_track)
 
-  map2_chr(track_known, split_track, function(x, y) {
+  purrr::map2_chr(track_known, split_track, function(x, y) {
 
     if (!x) return(NA)
-    else return(str_squish(str_extract(y[2], "(?<=\\[).+?(?=\\])")))
+    else return(stringr::str_squish(stringr::str_extract(y[2], "(?<=\\[).+?(?=\\])")))
   })
 }
 
@@ -106,44 +106,48 @@ parse_tracklist <- function(tracklist, flatten) {
 
 #' Read tracklist metadata from a mix entry
 #'
-#' @param page url of a mix entry
+#' @param url URL of a mix entry
 #'
 #' @return a list
 #' @export
 #'
 #' @examples
-#' get_tracklist("https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
-get_tracklist <- function(page) {
+#' \dontrun{
+#' get_tracklist(url = "https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
+#' }
+get_tracklist <- function(url) {
 
-  page_html <- read_html(page)
+  page_html <- xml2::read_html(url)
 
   tracklist <- extract_tracklist(page_html) %>%
     parse_tracklist(flatten = FALSE)
 
   tracklist[["title"]] <- extract_mix_title(page_html)
-  tracklist[["url"]] <- page
+  tracklist[["url"]] <- url
 
   tracklist
 }
 
 #' Get tracklist metadata from a mix entry into a tidy data frame
 #'
-#' @param page url of a mix entry
+#' @param url URL of a mix page
 #'
 #' @return a tibble
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' get_tracklist_tidy("https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
-get_tracklist_tidy <- function(page) {
+#' }
+get_tracklist_tidy <- function(url) {
 
-  page_html <- read_html(page)
+  page_html <- xml2::read_html(url)
 
   tracklist <- extract_tracklist(page_html) %>%
     parse_tracklist(flatten = TRUE)
 
   tracklist[["title"]] <- extract_mix_title(page_html)
-  tracklist[["url"]] <- page
+  tracklist[["url"]] <- url
 
   tracklist
 }

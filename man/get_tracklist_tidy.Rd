@@ -4,10 +4,10 @@
 \alias{get_tracklist_tidy}
 \title{Get tracklist metadata from a mix entry into a tidy data frame}
 \usage{
-get_tracklist_tidy(page)
+get_tracklist_tidy(url)
 }
 \arguments{
-\item{page}{url of a mix entry}
+\item{url}{URL of a mix page}
 }
 \value{
 a tibble
@@ -16,5 +16,7 @@ a tibble
 Get tracklist metadata from a mix entry into a tidy data frame
 }
 \examples{
+\dontrun{
 get_tracklist_tidy("https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
+}
 }

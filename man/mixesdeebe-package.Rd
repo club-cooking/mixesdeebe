@@ -4,12 +4,18 @@
 \name{mixesdeebe-package}
 \alias{mixesdeebe}
 \alias{mixesdeebe-package}
-\title{mixesdeebe: What the Package Does (One Line, Title Case)}
+\title{mixesdeebe: A Web Scraper for 'MixesDB'}
 \description{
-What the package does (one paragraph).
+A web scraper to assist R users looking to extract structured
+    data from the 'MixesDB' <https://www.mixesdb.com> site.
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Ewen Henderson \email{ewenhenderson@gmail.com} (\href{https://orcid.org/0000-0002-4748-4693}{ORCID})
+
+Authors:
+\itemize{
+  \item Alex Baiden
+}
 
 }
 \keyword{internal}
