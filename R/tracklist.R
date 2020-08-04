@@ -67,7 +67,7 @@ pluck_label <- function(split_track) {
 }
 
 # extract tracklist metadata into a data frame
-parse_tracklist <- function(tracklist) {
+parse_tracklist <- function(tracklist, flatten) {
 
   # split up entries
   track_info <- split_track(tracklist)
@@ -78,19 +78,29 @@ parse_tracklist <- function(tracklist) {
   track_names <- pluck_track(track_info)
   labels <- pluck_label(track_info)
 
-  # return a list
-  list(
-    tracklist = lapply(seq_along(tracklist), function(x) {
+  if (flatten) {
+    tibble::tibble(
+      order = 1:length(track_info),
+      timestamp = time_stamps,
+      artist = artists,
+      track = track_names,
+      label = labels
+    )
+  } else {
 
-      list(
-        order = x,
-        timestamp = time_stamps[x],
-        artist = artists[x],
-        track = track_names[x],
-        label = labels[x]
-      )
-    })
-  )
+    list(
+      tracklist = lapply(seq_along(tracklist), function(x) {
+
+        list(
+          order = x,
+          timestamp = time_stamps[x],
+          artist = artists[x],
+          track = track_names[x],
+          label = labels[x]
+        )
+      })
+    )
+  }
 
 }
 
@@ -108,7 +118,29 @@ read_tracklist <- function(page) {
   page_html <- read_html(page)
 
   tracklist <- extract_tracklist(page_html) %>%
-    parse_tracklist()
+    parse_tracklist(flatten = FALSE)
+
+  tracklist[["title"]] <- extract_mix_title(page_html)
+  tracklist[["url"]] <- page
+
+  tracklist
+}
+
+#' Get tracklist metadata from a mix entry into a tidy data frame
+#'
+#' @param page url of a mix entry
+#'
+#' @return a tibble
+#' @export
+#'
+#' @examples
+#' read_tracklist_tidy("https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
+read_tracklist_tidy <- function(page) {
+
+  page_html <- read_html(page)
+
+  tracklist <- extract_tracklist(page_html) %>%
+    parse_tracklist(flatten = TRUE)
 
   tracklist[["title"]] <- extract_mix_title(page_html)
   tracklist[["url"]] <- page
