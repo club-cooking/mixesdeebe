@@ -36,20 +36,16 @@ devtools::install_github("club-cooking/mixesdeebe")
 library(mixesdeebe)
 ```
 
-Get the track-list for a listed mix as a list object...
-
-```{r}
-get_tracklist("https://www.mixesdb.com/w/2020-06-15_-_Kush_Jones_-_Resident_Advisor_(RA.732)")
-```
-
-...or, in an analysis-friendly tibble.
+Get the tracklist for a mix, as a tidy "tibble".
 
 ```{r}
 get_tracklist_tidy("https://www.mixesdb.com/w/2020-06-15_-_Kush_Jones_-_Resident_Advisor_(RA.732)")
 ```
 
-Get all mix pages for a listed "sub-category" (e.g. a "mix series"):
+Get all mix pages for a "sub-category" (e.g. a "mix series"):
 
 ```{r}
-get_mix_entries("https://www.mixesdb.com/w/Category:Truancy_Volumes")
+truancy_vols <- get_mix_entries("https://www.mixesdb.com/w/Category:Truancy_Volumes")
+
+head(truancy_vols)
 ```

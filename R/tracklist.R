@@ -35,9 +35,11 @@ pluck_timestamp <- function(split_track) {
 # extract artist element
 pluck_artist <- function(split_track) {
 
-  stringr::str_squish(stringr::str_split_n(
-    rvest::pluck(split_track, 1), "\\]", 2
-  ))
+  stringr::str_squish(
+    stringr::str_remove_all(
+      rvest::pluck(split_track, 1), "\\s*\\[[^\\)]+\\]"
+      )
+    )
 }
 
 # extract track name element
@@ -49,7 +51,13 @@ pluck_track <- function(split_track) {
   purrr::map2_chr(track_known, split_track, function(x, y) {
 
     if (!x) return(NA)
-    else return(stringr::str_squish(stringr::str_split_n(y[2], "\\[", 1)))
+    else return(
+      stringr::str_squish(
+        stringr::str_remove_all(
+          y[2], "\\s*\\[[^\\)]+\\]"
+        )
+      )
+    )
   })
 }
 
@@ -61,8 +69,41 @@ pluck_label <- function(split_track) {
 
   purrr::map2_chr(track_known, split_track, function(x, y) {
 
-    if (!x) return(NA)
-    else return(stringr::str_squish(stringr::str_extract(y[2], "(?<=\\[).+?(?=\\])")))
+    if (!x)  {return(NA)}
+    else {
+        label <- stringr::str_squish(
+          stringr::str_extract(
+            y[2], "(?<=\\[).+?(?=\\])"
+          )
+        )
+
+        stringr::str_squish(
+          stringr::str_split_n(label, "-", 1)
+        )
+    }
+  })
+}
+
+# extract catalogue no.
+pluck_catno <- function(split_track) {
+
+  # check which tracks are known
+  track_known <- is_track_name_known(split_track)
+
+  purrr::map2_chr(track_known, split_track, function(x, y) {
+
+    if (!x)  {return(NA)}
+    else {
+      label <- stringr::str_squish(
+        stringr::str_extract(
+          y[2], "(?<=\\[).+?(?=\\])"
+        )
+      )
+
+      stringr::str_squish(
+        stringr::str_split_n(label, "-", 2)
+      )
+    }
   })
 }
 
@@ -77,6 +118,8 @@ parse_tracklist <- function(tracklist, flatten) {
   artists <- pluck_artist(track_info)
   track_names <- pluck_track(track_info)
   labels <- pluck_label(track_info)
+  cat_nos <- pluck_catno(track_info)
+
 
   if (flatten) {
     tibble::tibble(
@@ -84,7 +127,8 @@ parse_tracklist <- function(tracklist, flatten) {
       timestamp = time_stamps,
       artist = artists,
       track = track_names,
-      label = labels
+      label = labels,
+      cat_no = cat_nos
     )
   } else {
 
@@ -96,7 +140,8 @@ parse_tracklist <- function(tracklist, flatten) {
           timestamp = time_stamps[x],
           artist = artists[x],
           track = track_names[x],
-          label = labels[x]
+          label = labels[x],
+          cat_no = cat_nos[x]
         )
       })
     )
@@ -114,6 +159,7 @@ parse_tracklist <- function(tracklist, flatten) {
 #' @examples
 #' \dontrun{
 #' get_tracklist(url = "https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
+#' get_tracklist(url = "https://www.mixesdb.com/w/2020-06-15_-_Kush_Jones_-_Resident_Advisor_(RA.732)")
 #' }
 get_tracklist <- function(url) {
 
