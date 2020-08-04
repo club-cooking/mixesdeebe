@@ -31,7 +31,7 @@ get_subcat_entries <- function(home_page) {
 
   }
 
-  unlist(categories)
+  paste0("https://www.mixesdb.com", unlist(categories))
 
 }
 
@@ -69,6 +69,6 @@ get_mix_entries <- function(home_page) {
 
   }
 
-  unlist(mixes)
+  paste0("https://www.mixesdb.com", unlist(mixes))
 
 }
