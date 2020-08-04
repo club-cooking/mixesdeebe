@@ -19,3 +19,5 @@ Imports:
     stringr,
     tibble,
     xml2
+URL: https://github.com/club-cooking/mixesdeebe
+BugReports: https://github.com/club-cooking/mixesdeebe/issues
