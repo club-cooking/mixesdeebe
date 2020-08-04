@@ -3,3 +3,4 @@
 ^README\.Rmd$
 ^LICENSE\.md$
 test_workflow.R
+^\.github$

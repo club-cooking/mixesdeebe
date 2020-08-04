@@ -9,6 +9,8 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/mixesdeebe)](https://CRAN.R-project.org/package=mixesdeebe)
+[![R build
+status](https://github.com/club-cooking/mixesdeebe/workflows/R-CMD-check/badge.svg)](https://github.com/club-cooking/mixesdeebe/actions)
 <!-- badges: end -->
 
 A web scraper for [MixesDB](https://www.mixesdb.com), written in R.
