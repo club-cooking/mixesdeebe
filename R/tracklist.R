@@ -1,7 +1,7 @@
 # get track-list element from a mix page
 extract_tracklist <- function(page) {
 
-  rvest::html_nodes(page, css = "#Tracklist + ol > li") %>%
+  rvest::html_nodes(page, css = "#Tracklist ~ ol > li") %>%
     rvest::html_text()
 }
 
