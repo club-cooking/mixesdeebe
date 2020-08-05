@@ -21,3 +21,5 @@ Imports:
     xml2
 URL: https://github.com/club-cooking/mixesdeebe
 BugReports: https://github.com/club-cooking/mixesdeebe/issues
+Suggests: 
+    testthat
