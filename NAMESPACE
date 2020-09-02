@@ -2,6 +2,8 @@
 
 export("%>%")
 export(get_mix_entries)
+export(get_mix_meta)
+export(get_mix_meta_tidy)
 export(get_subcat_entries)
 export(get_tracklist)
 export(get_tracklist_tidy)

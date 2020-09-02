@@ -34,42 +34,70 @@ get_mix_entries <- function(url) {
 
   }
 
-  mix_urls <- paste0("https://www.mixesdb.com", unlist(mixes))
-
-  purrr::map(mix_urls, get_mix_meta)
-
-
+  paste0("https://www.mixesdb.com", unlist(mixes))
 
 }
 
-get_mix_meta <- function(url){
+#' Get mix-level metadata
+#'
+#' @param url URL of a mix page
+#'
+#' @return list
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' mixes <- get_mix_entries(url = "https://www.mixesdb.com/w/Category:FACT_Mix")
+#' get_mix_meta(mixes[1:5])
+#' }
+get_mix_meta <- function(url) {
+
+  purrr::map(url, get_mix_fields)
+}
+
+#' Get mix-level metadata into a tidy data frame
+#'
+#' @param url URL of a mix page
+#'
+#' @return tibble
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' mixes <- get_mix_entries(url = "https://www.mixesdb.com/w/Category:FACT_Mix")
+#' get_mix_meta_tidy(mixes[1:5])
+#' }
+get_mix_meta_tidy <- function(url){
+
+  purrr::map_dfr(url, get_mix_fields)
+}
+
+# extract mix-level metadata fields
+get_mix_fields <- function(url){
 
   page <- url
   page_html <- xml2::read_html(page)
-
 
   date_regex <- "\\d{4}-(?:0?[1-9]|1[012])-(?:0?[1-9]|[12][0-9]|3[01])*"
 
   mix_meta <- list()
 
-
   mix_title <- page_html %>%
     extract_mix_title() %>%
     stringr::str_replace_all("@", "-")
 
-
-  mix_meta[["date"]] <- anytime::anydate(str_extract(mix_title, date_regex))
+  mix_meta[["date"]] <- anytime::anydate(stringr::str_extract(mix_title, date_regex))
 
   mix_meta[["url"]] <- page
 
   mix_title_date_excl <- stringr::str_remove(mix_title, date_regex) %>%
-    str_replace("-", "") %>%
-    str_trim()
+    stringr::str_replace("-", "") %>%
+    stringr::str_trim()
 
   mix_meta[["title"]] <- mix_title_date_excl
 
   mix_title_split <- mix_title_date_excl %>%
-      str_split("-") %>%
+    stringr::str_split("-") %>%
     unlist()
 
   mix_meta[["artists"]] <- stringr::str_trim(mix_title_split[1])
@@ -78,10 +106,3 @@ get_mix_meta <- function(url){
   return(mix_meta)
 
 }
-
-get_mix_entries_tidy <- function(url){
-
-
-
-}
-

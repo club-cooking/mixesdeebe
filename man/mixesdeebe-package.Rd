@@ -9,6 +9,14 @@
 A web scraper to assist R users looking to extract structured
     data from the 'MixesDB' <https://www.mixesdb.com> site.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/club-cooking/mixesdeebe}
+  \item Report bugs at \url{https://github.com/club-cooking/mixesdeebe/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Ewen Henderson \email{ewenhenderson@gmail.com} (\href{https://orcid.org/0000-0002-4748-4693}{ORCID})
 
