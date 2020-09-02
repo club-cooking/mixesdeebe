@@ -1,10 +1,18 @@
+get_tracklist_element <- function(x) {
+
+  rvest::html_nodes(x, css = "#Tracklist, #Chart") %>%
+    rvest::html_attr("id")
+}
+
 # get track-list element from a mix page
 extract_tracklist <- function(page) {
 
-  tracks <- rvest::html_nodes(page, css = "#Tracklist, #Chart ~ ol > li")
+  element_name <- get_tracklist_element(page)
+
+  tracks <- rvest::html_nodes(page, css = glue::glue("#{element_name} ~ ol > li"))
 
   if (length(tracks) == 0) {
-    tracks <- rvest::html_nodes(page, css = "#Tracklist, #Chart ~ div > ol > li")
+    tracks <- rvest::html_nodes(page, css = glue::glue("#{element_name} ~ div > ol > li"))
 
   }
 
