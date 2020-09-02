@@ -25,7 +25,7 @@ get_subcat_entries <- function(url) {
 
   while(!is.null(page)) {
 
-    page_html <- xml2::read_html(page)
+    page_html <- polite_read_html(page)
 
     categories <- purrr::list_merge(categories, extract_category_url(page_html))
 

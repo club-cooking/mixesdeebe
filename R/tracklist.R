@@ -178,7 +178,7 @@ parse_tracklist <- function(tracklist, flatten) {
 #' }
 get_tracklist <- function(url) {
 
-  page_html <- xml2::read_html(url)
+  page_html <- polite_read_html(url)
 
   tracklist <- extract_tracklist(page_html) %>%
     parse_tracklist(flatten = FALSE)
@@ -202,7 +202,7 @@ get_tracklist <- function(url) {
 #' }
 get_tracklist_tidy <- function(url) {
 
-  page_html <- xml2::read_html(url)
+  page_html <- polite_read_html(url)
 
   tracklist <- extract_tracklist(page_html) %>%
     parse_tracklist(flatten = TRUE)
