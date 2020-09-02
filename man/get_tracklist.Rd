@@ -17,7 +17,7 @@ Read tracklist metadata from a mix entry
 }
 \examples{
 \dontrun{
-get_tracklist(url = "https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
+get_tracklist(url = "https://www.mixesdb.com/w/2019-03-06_-_Object_Blue_-_The_Selector_After_Dark")
 get_tracklist(url = "https://www.mixesdb.com/w/2020-06-15_-_Kush_Jones_-_Resident_Advisor_(RA.732)")
 }
 }

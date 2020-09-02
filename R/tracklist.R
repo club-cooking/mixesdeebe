@@ -85,7 +85,7 @@ pluck_label <- function(split_track) {
         )
 
         stringr::str_squish(
-          stringr::str_split_n(label, "-", 1)
+          stringr::str_split_n(label, " - ", 1)
         )
     }
   })
@@ -108,7 +108,7 @@ pluck_catno <- function(split_track) {
       )
 
       stringr::str_squish(
-        stringr::str_split_n(label, "-", 2)
+        stringr::str_split_n(label, " - ", 2)
       )
     }
   })
