@@ -26,7 +26,7 @@ get_mix_entries <- function(url) {
 
   while(!is.null(page)) {
 
-    page_html <- xml2::read_html(page)
+    page_html <- polite_read_html(page)
 
     mixes <- purrr::list_merge(mixes, extract_mixes(page_html))
 
@@ -76,7 +76,7 @@ get_mix_meta_tidy <- function(url){
 get_mix_fields <- function(url){
 
   page <- url
-  page_html <- xml2::read_html(page)
+  page_html <- polite_read_html(page)
 
   tracklist_completed_flag <- rvest::html_nodes(page_html, "#mw-normal-catlinks a") %>%
     rvest::html_attr("href") %>%
