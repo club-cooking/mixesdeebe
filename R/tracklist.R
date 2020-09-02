@@ -1,8 +1,15 @@
 # get track-list element from a mix page
 extract_tracklist <- function(page) {
 
-  rvest::html_nodes(page, css = "#Tracklist ~ ol > li") %>%
-    rvest::html_text()
+  tracks <- rvest::html_nodes(page, css = "#Tracklist ~ ol > li")
+
+  if (length(tracks) == 0) {
+    tracks <- rvest::html_nodes(page, css = "#Tracklist ~ div > ol > li")
+
+  }
+
+  rvest::html_text(tracks)
+
 }
 
 # extract mix title
@@ -158,7 +165,7 @@ parse_tracklist <- function(tracklist, flatten) {
 #'
 #' @examples
 #' \dontrun{
-#' get_tracklist(url = "https://www.mixesdb.com/w/2011-08-23_-_Objekt_@_Boiler_Room_Berlin_001")
+#' get_tracklist(url = "https://www.mixesdb.com/w/2019-03-06_-_Object_Blue_-_The_Selector_After_Dark")
 #' get_tracklist(url = "https://www.mixesdb.com/w/2020-06-15_-_Kush_Jones_-_Resident_Advisor_(RA.732)")
 #' }
 get_tracklist <- function(url) {
