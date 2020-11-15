@@ -80,9 +80,9 @@ get_mix_fields <- function(url){
 
   tracklist_completed_flag <- rvest::html_nodes(page_html, "#mw-normal-catlinks a") %>%
     rvest::html_attr("href") %>%
-    str_subset("Tracklist:") %>%
-    str_extract("\\_.*") %>%
-    str_replace("_", "")
+    stringr::str_subset("Tracklist:") %>%
+    stringr::str_extract("\\_.*") %>%
+    stringr::str_replace("_", "")
 
   date_regex <- "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
 
@@ -95,7 +95,7 @@ get_mix_fields <- function(url){
   mix_meta[["date"]] <- anytime::anydate(stringr::str_extract(mix_title, date_regex))
 
   mix_meta[["url"]] <- page
-  mix_meta[["tracklist_complete"]] <- if_else(tracklist_completed_flag == "complete", T,F)
+  mix_meta[["tracklist_complete"]] <- ifelse(tracklist_completed_flag == "complete", TRUE, FALSE)
 
   mix_title_date_excl <- stringr::str_remove(mix_title, date_regex) %>%
     stringr::str_replace("-", "") %>%
