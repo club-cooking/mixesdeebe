@@ -37,7 +37,7 @@ check_rtxt <-function(url, delay, user_agent, force, verbose){
 # function that actually fetches response from the web
 polite_read_html <- memoise::memoise(
                    function(url, ...,
-                   delay = 5,
+                   delay = 2,
                    user_agent=paste0("polite ", getOption("HTTPUserAgent"), "bot"),
                    force = FALSE,
                    verbose=FALSE){

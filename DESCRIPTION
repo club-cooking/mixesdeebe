@@ -28,3 +28,6 @@ URL: https://github.com/club-cooking/mixesdeebe
 BugReports: https://github.com/club-cooking/mixesdeebe/issues
 Suggests: 
     testthat
+Remotes:  
+    tidyverse/stringr
+    
